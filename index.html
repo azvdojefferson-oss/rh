@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Desafio RH | Gestão de Pessoas</title>
+<style>
+:root{--bg:#0b1220;--panel:#121e31;--panel2:#182840;--line:#2b405c;--text:#edf3fb;--muted:#a9bad0;--accent:#39c6a5;--accent2:#72a7ff;--warn:#ffcc70}
+*{box-sizing:border-box}body{margin:0;background:linear-gradient(135deg,#08101d,#101d31 60%,#0a1728);color:var(--text);font:15px/1.55 Arial,sans-serif}
+header{position:sticky;top:0;z-index:10;background:#0b1423ed;border-bottom:1px solid var(--line);backdrop-filter:blur(8px)}
+.top{max-width:1180px;margin:auto;padding:14px 22px;display:flex;justify-content:space-between;gap:12px;align-items:center}.brand{font-weight:800;letter-spacing:.08em;color:var(--accent)}
+main{max-width:1180px;margin:24px auto;padding:0 20px 60px}.hero{padding:28px;border:1px solid var(--line);border-radius:18px;background:linear-gradient(120deg,#172a43,#102033);margin-bottom:20px}.eyebrow{color:var(--accent);font-size:12px;font-weight:bold;letter-spacing:.16em}.hero h1{font-size:clamp(27px,4vw,42px);line-height:1.1;margin:9px 0}.hero p{color:var(--muted);max-width:850px}
+.grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px}.card{background:var(--panel);border:1px solid var(--line);border-radius:15px;padding:20px;margin:16px 0}.card h2{margin:0 0 12px;font-size:21px;padding-top:14px;border-top:1px solid var(--line)}.card h2:first-of-type{padding-top:0;border-top:0}.card h3{font-size:16px;color:var(--accent2);margin:20px 0 7px}.muted{color:var(--muted)}.pill{display:inline-block;padding:4px 9px;border-radius:20px;background:#1b3548;color:#a9f0dc;font-size:12px;margin:3px 5px 3px 0}
+label{display:block;font-weight:700;margin:12px 0 5px}input{width:100%;background:#0b1728;border:1px solid #3b526f;border-radius:9px;padding:11px;color:var(--text);font:inherit}input:focus{outline:2px solid var(--accent2);border-color:transparent}
+button{border:0;border-radius:10px;padding:12px 17px;font-weight:700;cursor:pointer;background:var(--accent);color:#06231e}button.secondary{background:#263d5a;color:var(--text);border:1px solid #49617e}.actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:18px}.casebox{background:#0c1a2b;border-left:4px solid var(--accent2);padding:15px;border-radius:9px;margin:12px 0}.warning{border-left-color:var(--warn)}.question{padding:15px 0;border-top:1px solid var(--line)}.question:first-of-type{border-top:0}.rubric{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}.rubric div{padding:12px;background:#0d1a2a;border:1px solid var(--line);border-radius:9px}.hidden{display:none}.footer{text-align:center;color:var(--muted);padding:25px;font-size:12px}
+@media(max-width:760px){.grid,.rubric{grid-template-columns:1fr}.top{padding:10px 14px}main{padding:0 12px 40px}.hero{padding:20px}}
+@media print{header,.actions,.no-print{display:none!important}body{background:white;color:#111}.card,.hero{background:white;color:#111;border:1px solid #aaa;break-inside:avoid}input{color:#111;background:white;border:1px solid #888}}
+
+/* Proteção contra seleção e cópia de texto */
+body, .card, .hero, .question, .casebox {
+  -webkit-user-select: none !important;
+  -moz-user-select: none !important;
+  -ms-user-select: none !important;
+  user-select: none !important;
+  -webkit-touch-callout: none !important;
+}
+input {
+  -webkit-user-select: text !important;
+  user-select: text !important;
+}
+</style>
+</head>
+<body oncontextmenu="return false;" onselectstart="return false;" ondragstart="return false;">
+<header><div class="top"><div><div class="brand">JÉFFERSON AZEVEDO | SIMULADOR EDUCACIONAL</div><small class="muted">Gestão de Pessoas • Recursos Humanos</small></div></div></header>
+<main>
+<section class="hero">
+ <div class="eyebrow">ESTUDO DE CASO • DESAFIO GERENCIAL</div>
+ <h1>Quando o RH falha: o custo das decisões erradas</h1>
+ <p>Você foi contratado(a) como consultor(a) de Recursos Humanos para diagnosticar uma empresa em crise. Sua missão é investigar falhas de contratação e desligamento, interpretar o clima organizacional, reorganizar a estrutura hierárquica e apresentar um plano de recuperação viável.</p>
+ <span class="pill">Atividade individual</span><span class="pill">29 questões complexas</span><span class="pill">Resolução no caderno</span><span class="pill">Postagem obrigatória</span>
+</section>
+
+<section class="card" id="identificacao">
+ <h2>01 • Identificação do estudante</h2>
+ <div class="grid">
+  <div><label for="nome">Nome completo</label><input id="nome" autocomplete="off" placeholder="Digite seu nome"></div>
+  <div><label for="matricula">Matrícula / turma</label><input id="matricula" autocomplete="off" placeholder="Digite sua matrícula ou turma"></div>
+ </div>
+ <div class="actions"><button onclick="gerarCaso()">Gerar meu cenário empresarial</button><span class="muted" id="statusCaso">Preencha os dados para liberar o estudo de caso.</span></div>
+</section>
+
+<section class="card hidden" id="cenario">
+ <h2>02 • Dossiê confidencial da empresa</h2>
+ <p class="muted">Os dados abaixo compõem o cenário individual. Utilize-os como evidências em todas as respostas.</p>
+ <div class="grid">
+  <div class="casebox"><strong>Empresa</strong><div id="empresa"></div></div>
+  <div class="casebox"><strong>Segmento e porte</strong><div id="segmento"></div></div>
+  <div class="casebox"><strong>Quadro de pessoal</strong><div id="quadro"></div></div>
+  <div class="casebox"><strong>Indicadores recentes</strong><div id="indicadores"></div></div>
+ </div>
+ <h3>Relato da direção</h3><div class="casebox" id="relato"></div>
+ <h3>Registros internos coletados</h3><div id="registros"></div>
+ <h3>Estrutura atual — organograma descrito</h3><div class="casebox" id="orgAtual"></div>
+ <div class="casebox warning"><strong>Alerta:</strong> não presuma que toda informação do dossiê está correta. Diferencie fatos, relatos, hipóteses e informações que precisam ser verificadas. Não exponha dados pessoais ou faça julgamentos discriminatórios.</div>
+</section>
+
+<section class="card hidden" id="atividade">
+ <h2>03 • Missão 1 — Investigação da contratação inadequada</h2>
+ <p>Analise a contratação descrita no dossiê. Considere competências técnicas, competências comportamentais, requisitos da função, integração e critérios objetivos de seleção.</p>
+ <div class="question"><strong>1. Diagnóstico da seleção</strong><p>Identifique no mínimo quatro falhas no processo de recrutamento e seleção. Para cada falha, indique a evidência do dossiê, o risco gerado e a consequência provável para a empresa.</p><p class="muted"><em>Registre sua resposta no caderno, identificando o número da questão.</em></p></div>
+ <div class="question"><strong>2. Perfil profissional e critérios</strong><p>Defina o perfil adequado para a vaga crítica do caso. Descreva no mínimo cinco requisitos, separando conhecimentos técnicos, habilidades e atitudes. Justifique dois critérios eliminatórios e dois critérios classificatórios.</p><p class="muted"><em>Registre sua resposta no caderno, identificando o número da questão.</em></p></div>
+ <div class="question"><strong>3. Reestruturação do processo seletivo</strong><p>Desenhe um processo seletivo com pelo menos seis etapas, desde a abertura da vaga até o acompanhamento no período de experiência. Explique como reduzir vieses e tornar a decisão rastreável.</p><p class="muted"><em>Registre sua resposta no caderno, identificando o número da questão.</em></p></div>
+
+ <h2>04 • Missão 2 — Desligamento conduzido de forma inadequada</h2>
+ <p>O desligamento mal conduzido pode gerar insegurança, perda de confiança, conflitos, riscos trabalhistas e danos à reputação. Analise o procedimento sem emitir conclusões jurídicas definitivas: a empresa deve validar cada medida com profissionais responsáveis e observar a legislação aplicável.</p>
+ <div class="question"><strong>4. Auditoria do desligamento</strong><p>Liste as falhas de procedimento e de comunicação identificadas. Classifique-as em: falha documental/processual, falha de liderança, falha de comunicação e falha de respeito/dignidade. Indique quais informações ainda precisam ser apuradas.</p><p class="muted"><em>Registre sua resposta no caderno, identificando o número da questão.</em></p></div>
+ <div class="question"><strong>5. Protocolo correto de desligamento</strong><p>Elabore um fluxo responsável de desligamento, contemplando preparação, validação interna, comunicação reservada, documentação, orientações ao trabalhador, devolução de recursos, transferência de atividades e encerramento de acessos. Explique como preservar a dignidade da pessoa.</p><p class="muted"><em>Registre sua resposta no caderno, identificando o número da questão.</em></p></div>
+ <div class="question"><strong>6. Recuperação da confiança</strong><p>Proponha três ações para reduzir os impactos do desligamento sobre a equipe que permaneceu. Para cada ação, indique responsável, prazo e indicador de acompanhamento.</p><p class="muted"><em>Registre sua resposta no caderno, identificando o número da questão.</em></p></div>
+
+ <h2>05 • Missão 3 — Diagnóstico do clima organizacional</h2>
+ <div class="question"><strong>7. Análise das causas</strong><p>Identifique pelo menos cinco fatores que podem explicar o clima organizacional apresentado. Organize-os em causas relacionadas à liderança, comunicação, reconhecimento, condições de trabalho, desenvolvimento e relações interpessoais. Diferencie causa e sintoma.</p><p class="muted"><em>Registre sua resposta no caderno, identificando o número da questão.</em></p></div>
+ <div class="question"><strong>8. Pesquisa de clima</strong><p>Crie uma pesquisa com oito perguntas objetivas e uma pergunta aberta. Inclua escala de resposta, explique como garantir anonimato e descreva como os resultados serão analisados e comunicados.</p><p class="muted"><em>Registre sua resposta no caderno, identificando o número da questão.</em></p></div>
+ <div class="question"><strong>9. Plano de intervenção</strong><p>Proponha quatro ações prioritárias para melhorar o clima. Use a lógica 5W2H (o quê, por quê, onde, quando, quem, como e quanto). Inclua pelo menos um indicador mensurável por ação.</p><p class="muted"><em>Registre sua resposta no caderno, identificando o número da questão.</em></p></div>
+
+ <h2>06 • Missão 4 — Reorganização do organograma</h2>
+ <div class="question"><strong>10. Diagnóstico estrutural</strong><p>Explique os problemas do organograma atual: subordinação, amplitude de controle, duplicidade de comando, ausência de responsabilidades ou excesso de centralização. Use exemplos do cenário.</p><p class="muted"><em>Registre sua resposta no caderno, identificando o número da questão.</em></p></div>
+ <div class="question"><strong>11. Novo organograma</strong><p>Proponha uma estrutura organizacional coerente com o porte e o segmento da empresa. Represente hierarquicamente os cargos e setores com setas ou níveis. Indique a quem cada função responde e justifique a estrutura.</p><p class="muted"><em>Registre sua resposta no caderno, identificando o número da questão.</em></p></div>
+ <div class="question"><strong>12. Descrição de responsabilidades</strong><p>Escolha quatro cargos do novo organograma e descreva: missão do cargo, três responsabilidades, autoridade para decidir e interfaces com outras áreas.</p><p class="muted"><em>Registre sua resposta no caderno, identificando o número da questão.</em></p></div>
+
+ <h2>07 • Missão 5 — Parecer do consultor de RH</h2>
+ <div class="question"><strong>13. Plano integrado de recuperação</strong><p>Elabore um plano de 30, 60 e 90 dias. Defina prioridades, responsáveis, recursos necessários, riscos e indicadores. As ações devem integrar contratação, desligamento, clima e estrutura organizacional.</p><p class="muted"><em>Registre sua resposta no caderno, identificando o número da questão.</em></p></div>
+ <div class="question"><strong>14. Decisão gerencial fundamentada</strong><p>Redija um parecer à direção com até 15 linhas: qual problema deve ser tratado primeiro, por quê, quais decisões não podem ser adiadas e quais evidências demonstrarão que houve melhoria?</p><p class="muted"><em>Registre sua resposta no caderno, identificando o número da questão.</em></p></div>
+
+ <h2>08 • Missão 6 — Aprofundamento Estratégico, Riscos e Indicadores (Novas Questões)</h2>
+ <p>As questões a seguir exigem cruzamento avançado entre custos ocultos, governança de RH, cultura organizacional e sustentabilidade operacional do cenário.</p>
+
+ <div class="question"><strong>15. Custos ocultos da contratação equivocada</strong><p>Analise o impacto financeiro e operacional da contratação por indicação sem critérios técnicos para a vaga crítica do dossiê. Detalhe pelo menos cinco custos diretos e indiretos (como retrabalho, tempo de supervisão, perda de produtividade da equipe, desgaste com clientes e eventual nova reposição) e explique como mensurá-los.</p><p class="muted"><em>Registre sua resposta no caderno, identificando o número da questão.</em></p></div>
+
+ <div class="question"><strong>16. Roteiro de entrevista por competências (Método STAR)</strong><p>Para evitar novas contratações baseadas apenas em percepções subjetivas, elabore quatro perguntas situacionais utilizando a metodologia STAR (Situação, Tarefa, Ação e Resultado) voltadas especificamente para a vaga crítica do seu dossiê. Para cada pergunta, defina o que caracteriza uma resposta excelente e quais sinais indicam alerta vermelho.</p><p class="muted"><em>Registre sua resposta no caderno, identificando o número da questão.</em></p></div>
+
+ <div class="question"><strong>17. Programa estruturado de Onboarding (Integração 90 dias)</strong><p>O dossiê aponta que o treinamento de integração foi cancelado e o recém-contratado iniciou sem conhecer procedimentos. Desenhe um cronograma de onboarding dividido em Dia 1, Primeira Semana, Primeiro Mês e Terceiro Mês, especificando responsáveis (RH e gestor imediato), conteúdos obrigatórios e checkpoints de avaliação do período de experiência.</p><p class="muted"><em>Registre sua resposta no caderno, identificando o número da questão.</em></p></div>
+
+ <div class="question"><strong>18. Gestão de desempenho e feedback corretivo antes da demissão</strong><p>Antes de optar pelo desligamento, a liderança deve aplicar ferramentas de acompanhamento. Estruture uma política de feedback contínuo e Plano de Melhoria de Desempenho (PDI/PIP) contendo: critérios objetivos de avaliação, prazos de acompanhamento, registros documentais necessários e condições claras que justificam ou evitam um futuro desligamento.</p><p class="muted"><em>Registre sua resposta no caderno, identificando o número da questão.</em></p></div>
+
+ <div class="question"><strong>19. Análise de riscos psicossociais e passivos trabalhistas</strong><p>Considerando o desligamento realizado em local compartilhado e a propagação de versões contraditórias sobre o motivo, analise quatro riscos psicossociais para a equipe e quatro possíveis vulnerabilidades administrativas ou trabalhistas (como alegação de exposição vexatória, desvio de função por falta de descrição de cargos e falhas na gestão de jornada/férias), indicando medidas preventivas de governança.</p><p class="muted"><em>Registre sua resposta no caderno, identificando o número da questão.</em></p></div>
+
+ <div class="question"><strong>20. Entrevista de desligamento (Offboarding analítico)</strong><p>Como a empresa não possui diagnóstico documentado sobre os pedidos de demissão recentes, crie um roteiro de entrevista de desligamento com seis perguntas estratégicas. Explique quem deve conduzir essa entrevista, em que momento deve ocorrer e como transformar os relatos coletados em indicadores gerenciais sem quebrar a confidencialidade.</p><p class="muted"><em>Registre sua resposta no caderno, identificando o número da questão.</em></p></div>
+
+ <div class="question"><strong>21. Auditoria metodológica dos indicadores do dossiê</strong><p>O dossiê informa índices de rotatividade, faltas e uma pesquisa informal sem anonimato, mas alerta que não há série histórica validada nem critérios uniformes. Explique tecnicamente por que o percentual de satisfação informado não é confiável, apresente as fórmulas padrão para calcular Turnover (rotatividade) e Absenteísmo (faltas) e defina metas realistas para os próximos seis meses.</p><p class="muted"><em>Registre sua resposta no caderno, identificando o número da questão.</em></p></div>
+
+ <div class="question"><strong>22. Plano de comunicação interna e gestão de crise</strong><p>Frente aos boatos gerados pelo desligamento público e às ordens contraditórias entre setores, elabore uma matriz de comunicação interna contemplando: canais oficiais, periodicidade, público-alvo, responsável pela emissão e protocolo de resposta rápida para conter rumores e alinhar expectativas entre direção, lideranças e operação.</p><p class="muted"><em>Registre sua resposta no caderno, identificando o número da questão.</em></p></div>
+
+ <div class="question"><strong>23. Desenvolvimento de lideranças e correção de vieses gerenciais</strong><p>No relato da direção, um gestor afirma que "as pessoas não querem trabalhar", atribuindo falhas estruturais exclusivamente aos colaboradores. Desenvolva uma trilha de capacitação gerencial com quatro módulos temáticos obrigatórios para supervisores e gerentes, justificando como cada módulo combate o viés de atribuição, o favoritismo e a centralização.</p><p class="muted"><em>Registre sua resposta no caderno, identificando o número da questão.</em></p></div>
+
+ <div class="question"><strong>24. Matriz RACI para eliminação de conflitos de autoridade</strong><p>O dossiê revela que dois setores acreditam ter poder para aprovar férias e distribuir tarefas para a mesma equipe. Construa uma Matriz RACI (Responsável, Aprovador, Consultado e Informado) contemplando seis processos críticos de gestão de pessoas (recrutamento, integração, distribuição diária de tarefas, aprovação de férias/folgas, avaliação de desempenho e desligamento) envolvendo Direção, Gerência Operacional, Supervisores e RH.</p><p class="muted"><em>Registre sua resposta no caderno, identificando o número da questão.</em></p></div>
+
+ <div class="question"><strong>25. Reposicionamento do RH: de operacional para estratégico</strong><p>No organograma atual, o setor Administrativo/RH recebe demandas de todos sem autoridade definida. Elabore uma proposta de reestruturação da área de Recursos Humanos, separando rotinas de Departamento Pessoal (folha, ponto, documentação) dos subsistemas estratégicos de Gestão de Pessoas (atração, desenvolvimento, clima e retenção), definindo o nível hierárquico ideal do RH e sua alçada de veto ou aprovação.</p><p class="muted"><em>Registre sua resposta no caderno, identificando o número da questão.</em></p></div>
+
+ <div class="question"><strong>26. Dimensionamento de equipes e análise da amplitude de controle</strong><p>Considerando o quadro total de colaboradores do seu cenário e o fato de a gerência operacional coordenar diretamente um terço da equipe enquanto supervisores recebem ordens cruzadas, analise os impactos da amplitude de controle excessiva na qualidade da supervisão, segurança operacional e velocidade de decisão. Proponha uma distribuição numérica equilibrada por nível hierárquico.</p><p class="muted"><em>Registre sua resposta no caderno, identificando o número da questão.</em></p></div>
+
+ <div class="question"><strong>27. Política de reconhecimento, carreira e retenção de talentos</strong><p>Diante do aumento nos pedidos de demissão e da percepção de favoritismo relatada pela equipe, estruture uma política transparente de progressão e reconhecimento profissional. Defina critérios objetivos para promoções internas, meritocracia e feedback de carreira que substituam indicações informais.</p><p class="muted"><em>Registre sua resposta no caderno, identificando o número da questão.</em></p></div>
+
+ <div class="question"><strong>28. Gestão da mudança e análise de resistência organizacional</strong><p>A implementação de um novo organograma, processos seletivos rigorosos e regras claras de autoridade enfrentará resistência tanto de líderes habituados à informalidade quanto de colaboradores desconfiados. Mapeie três grupos de stakeholders internos, identifique as prováveis fontes de resistência de cada grupo e proponha estratégias de engajamento para garantir a adesão às mudanças.</p><p class="muted"><em>Registre sua resposta no caderno, identificando o número da questão.</em></p></div>
+
+ <div class="question"><strong>29. Painel de Governança e KPIs de People Analytics</strong><p>Para que a direção abandone decisões impulsivas ("substituir pessoas rapidamente sem diagnóstico"), projete um painel executivo com seis indicadores-chave de desempenho (KPIs) de Gestão de Pessoas. Para cada indicador, especifique: nome do KPI, fórmula de cálculo, fonte de dados, periodicidade de análise, gatilho de alerta (quando agir) e decisão gerencial associada.</p><p class="muted"><em>Registre sua resposta no caderno, identificando o número da questão.</em></p></div>
+</section>
+
+<section class="card hidden" id="entrega">
+ <h2>09 • Critérios de avaliação e entrega</h2>
+ <p>Revise suas respostas. Todas devem utilizar dados do dossiê individual, apresentar justificativas e indicar ações aplicáveis. Respostas genéricas, sem vínculo com as evidências, não demonstram domínio do estudo de caso.</p>
+ <div class="rubric">
+  <div><strong>Contratação e Onboarding</strong><br><small>Diagnóstico das falhas, custos ocultos, perfil, STAR e integração</small></div>
+  <div><strong>Desligamento e Riscos</strong><br><small>Auditoria, PDI/PIP, protocolo ético, offboarding e riscos trabalhistas</small></div>
+  <div><strong>Clima e Liderança</strong><br><small>Causas, pesquisa, plano 5W2H, comunicação de crise e capacitação</small></div>
+  <div><strong>Organograma e Governança</strong><br><small>Diagnóstico estrutural, nova hierarquia, Matriz RACI e amplitude de controle</small></div>
+  <div><strong>RH Estratégico e Retenção</strong><br><small>Reposicionamento do RH, política de reconhecimento e gestão da mudança</small></div>
+  <div><strong>Parecer e People Analytics</strong><br><small>Plano integrado (30/60/90 dias), decisão gerencial e painel de KPIs</small></div>
+ </div>
+ <label>Autoavaliação: qual foi a decisão mais difícil deste estudo de caso e quais evidências sustentam sua escolha?</label>
+ <p class="muted"><em>Registre sua autoavaliação no caderno ao final da atividade.</em></p>
+ <div class="casebox">
+  <strong>Orientações obrigatórias para entrega</strong>
+  <ol>
+   <li>Responda todas as 29 questões no caderno, mantendo a numeração apresentada nesta atividade.</li>
+   <li>Utilize as informações do dossiê individual e apresente justificativas técnicas.</li>
+   <li>Ao finalizar, fotografe ou digitalize suas respostas, garantindo que todas as páginas estejam legíveis e na sequência correta.</li>
+   <li>Reúna as páginas em um único arquivo PDF e publique no ambiente virtual indicado pelo professor.</li>
+   <li>Confira se o arquivo enviado contém nome completo, matrícula/turma e todas as respostas.</li>
+  </ol>
+ </div>
+ <div class="actions no-print">
+  <button class="secondary" onclick="window.print()">Imprimir atividade / salvar enunciado em PDF</button>
+ </div>
+ <p class="muted">A atividade deve ser desenvolvida integralmente no caderno. Não responda neste arquivo HTML. A postagem deverá ser realizada conforme prazo e orientações definidos pelo professor.</p>
+</section>
+<div class="footer">Material didático • Gestão de Pessoas e Recursos Humanos • Desenvolvido por Jéfferson Azevedo</div>
+</main>
+<script>
+const setores=["instalações elétricas prediais","manutenção industrial","logística e distribuição","serviços de tecnologia","varejo técnico"];
+const empresas=["EletroNorte Serviços","Prisma Operações","Conecta Engenharia","Horizonte Soluções","Vértice Serviços Integrados"];
+const relatos=[
+"Nos últimos meses, a direção percebeu atrasos, retrabalho e pedidos de demissão. Um supervisor afirma que 'as pessoas não querem trabalhar', enquanto funcionários relatam decisões contraditórias e falta de orientação. A direção quer substituir pessoas rapidamente, mas não possui diagnóstico documentado.",
+"A empresa cresceu sem revisar sua estrutura. Gestores contratam por indicação, comunicam decisões de maneira informal e cobram resultados sem definir responsabilidades. A equipe relata favoritismo, insegurança e ausência de critérios claros.",
+"Após uma demissão feita diante de colegas, aumentaram os conflitos e as faltas. A última contratação foi aprovada sem entrevista estruturada ou validação das competências. A direção atribui os problemas exclusivamente aos funcionários.",
+"Os líderes disputam autoridade e repassam ordens diferentes. A área de RH atua apenas de forma operacional e não participa do planejamento. Há dificuldade para integrar novos empregados e para comunicar mudanças."
+];
+let caso=null;
+function hash(s){let h=2166136261;for(let i=0;i<s.length;i++){h^=s.charCodeAt(i);h=Math.imul(h,16777619)}return h>>>0}
+function rng(seed){return ()=>{seed=(seed*1664525+1013904223)>>>0;return seed/4294967296}}
+function gerarCaso(){
+ const nome=document.getElementById('nome').value.trim(), mat=document.getElementById('matricula').value.trim();
+ if(!nome||!mat){alert("Preencha nome e matrícula/turma.");return}
+ const r=rng(hash((nome+"|"+mat).toLowerCase()));
+ const pick=a=>a[Math.floor(r()*a.length)];
+ const setor=pick(setores), empresa=pick(empresas), n=24+Math.floor(r()*87), vagas=pick(["supervisor operacional","assistente administrativo","técnico de campo","líder de equipe"]);
+ const rot=(8+Math.floor(r()*25)), faltas=(3+Math.floor(r()*12)), satisf=(28+Math.floor(r()*43));
+ const registro=[
+ `A vaga de ${vagas} foi preenchida por indicação. Não há matriz de competências assinada nem registro de entrevista técnica.`,
+ `O novo empregado recebeu orientações verbais e começou a executar tarefas antes de conhecer os procedimentos internos.`,
+ `Um trabalhador foi comunicado sobre o desligamento em local compartilhado, sem reunião reservada. Colegas receberam versões diferentes sobre o motivo.`,
+ `O gestor imediato afirma que o RH deve resolver sozinho os conflitos; o RH afirma que os gestores não encaminham informações.`,
+ `Pesquisa informal, sem anonimato, apontou ${satisf}% de respostas positivas. Parte da equipe diz que não respondeu por receio de identificação.`,
+ `A rotatividade estimada no período foi de ${rot}%. O índice de faltas foi de ${faltas}%. Não há série histórica validada nem critérios uniformes de cálculo.`,
+ `Dois setores acreditam que podem aprovar férias e distribuir tarefas para a mesma equipe. Não existe descrição formal de cargos.`,
+ `O treinamento de integração foi cancelado duas vezes por falta de agenda. Não há avaliação do período de experiência.`
+ ];
+ // Varia a ordem das evidências para exigir leitura e referência ao caso.
+ for(let i=registro.length-1;i>0;i--){let j=Math.floor(r()*(i+1));[registro[i],registro[j]]=[registro[j],registro[i]]}
+ caso={empresa,setor,n,vagas,rot,faltas,satisf,relato:pick(relatos),registro};
+ document.getElementById('empresa').textContent=empresa;
+ document.getElementById('segmento').textContent=setor+" • empresa de pequeno/médio porte";
+ document.getElementById('quadro').textContent=n+" colaboradores • vaga crítica: "+vagas;
+ document.getElementById('indicadores').textContent="Rotatividade estimada: "+rot+"% • faltas: "+faltas+"% • respostas positivas na pesquisa informal: "+satisf+"%";
+ document.getElementById('relato').textContent=caso.relato;
+ document.getElementById('registros').innerHTML=registro.map((x,i)=>`<div class="casebox"><strong>Registro ${i+1}.</strong> ${x}</div>`).join('');
+ document.getElementById('orgAtual').innerHTML="<strong>Direção geral</strong><br>↳ Gerência operacional (coordena diretamente "+Math.ceil(n/3)+" pessoas)<br>↳ Administrativo/RH (recebe demandas de todos, sem autoridade definida)<br>↳ Supervisores de setor (alguns recebem ordens diretamente da direção e outros da gerência)<br>↳ Equipes operacionais (há tarefas distribuídas por mais de uma liderança)";
+ ["cenario","atividade","entrega"].forEach(id=>document.getElementById(id).classList.remove('hidden'));
+ document.getElementById('statusCaso').textContent="Cenário individual gerado. Não altere nome/matrícula durante a atividade.";
+ document.getElementById('cenario').scrollIntoView({behavior:'smooth'});
+}
+
+// Bloqueio reforçado contra cópia, inspeção e atalhos
+document.addEventListener('contextmenu', e => e.preventDefault());
+document.addEventListener('selectstart', e => {
+  if (!['INPUT', 'TEXTAREA'].includes(e.target.tagName)) e.preventDefault();
+});
+document.addEventListener('copy', e => {
+  if (!['INPUT', 'TEXTAREA'].includes(document.activeElement.tagName)) {
+    if (e.clipboardData) e.clipboardData.setData('text/plain', 'Cópia não permitida nesta atividade.');
+    e.preventDefault();
+  }
+});
+document.addEventListener('cut', e => {
+  if (!['INPUT', 'TEXTAREA'].includes(document.activeElement.tagName)) e.preventDefault();
+});
+document.addEventListener('keydown', e => {
+  const key = e.key.toLowerCase();
+  if ((e.ctrlKey || e.metaKey) && ['c', 'u', 's', 'a', 'x'].includes(key)) {
+    if (!['INPUT', 'TEXTAREA'].includes(document.activeElement.tagName)) {
+      e.preventDefault();
+    }
+  }
+  if (e.key === 'F12' || ((e.ctrlKey || e.metaKey) && e.shiftKey && ['i', 'j', 'c'].includes(key))) {
+    e.preventDefault();
+  }
+});
+</script>
+</body>
+</html>
